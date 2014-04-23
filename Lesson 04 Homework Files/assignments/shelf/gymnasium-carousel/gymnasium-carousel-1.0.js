@@ -1,14 +1,22 @@
 /*
 
-Don't forget to document your plugin! Include any assumptions that your plugin is making.
+Carousel Plugin
+To use: Select your Carousel shelf wrapper , then call "makeCarouselFor" with the selector for your navigationleft, navigatorRight,carousel, 
+animation elements.
 
-*/
-
+$('.shelf-wrapper').makeCarouselFor('.nav-arrow-left', '.nav-arrow-right', '.carousel-wrapper', 'ul.shelf > li'); */
 // Don't forget to add your own stylesheet.
 
-$(document).ready(function() {
+$(document.head).append('<link rel="stylesheet" type="text/css" href="gymnasium-carousel/gymnasium-carousel-1.0.css">');
+
+
+$.fn.makeCarouselFor =  function(nleft, nRight, carouselSelecter, animatinSelecter) {
 	// Set up our carousel.
-	var $carousel = $('.carousel-wrapper');
+	var $shelfwr = this;
+	var $naviL = $(nleft);
+	var $naviR = $(nRight),
+		$carousel = $(carouselSelecter),
+		$animaS = $(animatinSelecter);
 	$carousel.cycle({
 		fx: 'scrollHorz',
 		speed: 400,
@@ -18,20 +26,20 @@ $(document).ready(function() {
 	}).cycle('pause');
 
 	// Set up the carousel buttons.
-	$('.nav-arrow-left').click(function() {
+	$naviL.click(function() {
 		$carousel.cycle('prev');
 	});
-	$('.nav-arrow-right').click(function() {
+	$naviR.click(function() {
 		$carousel.cycle('next');
 	});
 
 	// Animate in.
-	$('ul.shelf > li').animate({ top: 0, left: 0 }, 700, 'easeOutBounce');
+	$animaS.animate({ top: 0, left: 0 }, 700, 'easeOutBounce');
 
 	// Set up hover effect.
-	$('ul.shelf > li').hover(
+	$animaS.hover(
 		function() { $(this).children('.meta').stop().animate({ bottom: 0 }, 250) },
 		function() { $(this).children('.meta').stop().animate({ bottom: -22 }, 100) }
 	)
 
-});
+};
