@@ -16,11 +16,13 @@
 
 var shelfTemplate = '<ul class="shelf">%{shelf}</ul>',
     posterTemplate = '<li class="shelf-item shelf-position-%{position}" style="background-image: url(\'%{imageUrl}\')"><div class="meta">%{inStock} - %{price}</div></li>';
-
+    
     //Control
     var pageDidLoad,
     	posterDataDidLoad,
     	posterData;
+    	
+
 
 
  $(document).ready(function() {
@@ -28,16 +30,26 @@ var shelfTemplate = '<ul class="shelf">%{shelf}</ul>',
  	if (pageDidLoad && posterDataDidLoad) processPosterData();
 
  });
+ 
+ // url for data Source
+  var dataUrl = 'data/space.json';
+
 
  $.ajax({
- 	url: 'data/space.json',
- 	dataType: 'json',
+ 	url: dataUrl,
+ 	dataType: dataUrl.substring(dataUrl.lastIndexOf(".")+1),
  	success: function(result) {
      posterData = result;
      posterDataDidLoad = true;
      if (pageDidLoad && posterDataDidLoad) processPosterData();
 
- 	}
+ 	},
+
+ 	statusCode: {
+	 404: function() {
+		alert( "page not found" );
+		}
+}
 
  });
 
@@ -70,10 +82,15 @@ function processPosterData() {
 		postersHtml = '';
 	}
 	};
+	
 
 
+    
+     	// console.log(shelfHtmls);
 	// Drop the shelf Html into the element
       $('.carousel-wrapper').html(shelfHtmls.join(''));
+
+
 	// And for good measure, update the carousel's title
 	$('.category').text(posterData[0].category)
 	// Set up our carousel.
@@ -144,7 +161,7 @@ function processPosterData() {
 	<body>
 		<h1>The Poster Store</h1>
 		<div class="shelf-wrapper">
-			<h2 class="category"><!-- Shelf category title goes here. --></h2>
+			<h2 class="category"><!--Shelf category title goes here. --></h2> 
 			<div class="nav-arrow nav-arrow-left">&#xab;</div>
 			<div class="carousel-wrapper">
 				<!-- Shelves full of posters go here. -->
